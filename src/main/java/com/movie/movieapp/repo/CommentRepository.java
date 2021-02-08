@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment,Long> {
-    @Query("select c from Comment c inner join Movie m on c.movie.id = m.id where (c.parentComment is null or c.parentComment.active = true ) and c.active = true and m.active = true")
+    @Query("select c from Comment c inner join Movie m on c.movie.id = m.id where m.id = :movieId and c.active = true and m.active = true")
     List<Comment> findActiveMovieAndComments(@Param("movieId") Long movieId);
     Optional<Comment> findByIdAndActive(Long id, boolean active);
 }

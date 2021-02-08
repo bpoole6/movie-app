@@ -2,9 +2,7 @@
 const parseJwt = () => {
     const token = localStorage.getItem("jwt_token")
     if(token && token!=='undefined') {
-        console.log('token '+ token)
         var base64Payload = token.split('.')[1];
-        console.log(base64Payload)
         var payload = atob(base64Payload);
         return JSON.parse(payload.toString());
     }
@@ -31,7 +29,5 @@ const hasAdminRole =() =>{
     return !!token.roles.map(x => x.toLowerCase()).includes("admin");
 }
 
-let payload= parseJwt();
-console.log("payload:- ", payload);
 
 export {parseJwt, isAuthenticated, hasAdminRole, principalId};

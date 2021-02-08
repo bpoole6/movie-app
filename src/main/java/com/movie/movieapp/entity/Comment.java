@@ -27,8 +27,6 @@ public class Comment extends BaseEntity {
 
     private boolean active;
 
-    private ZonedDateTime createdAt;
-
     @ManyToOne()
     @JoinColumn(name = "commented_id")
     private Comment parentComment;

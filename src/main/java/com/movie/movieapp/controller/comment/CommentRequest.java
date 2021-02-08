@@ -12,7 +12,7 @@ public class CommentRequest {
     private String comment;
     @NotNull
     private Long movieId;
-    @NotNull
+
     private Long commentId;
 
     private Long parentId;

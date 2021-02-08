@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class CommentController {
     }
 
     @GetMapping("/movie/{movieId}")
-    public ResponseEntity<Map<Long,ParentCommentDTO>> commentsByMovie(@PathVariable("movieId")Long movieId){
+    public ResponseEntity<Collection<ParentCommentDTO>> commentsByMovie(@PathVariable("movieId")Long movieId){
         return new ResponseEntity<>(this.commentService.findByMovie(movieId), HttpStatus.OK);
 
     }

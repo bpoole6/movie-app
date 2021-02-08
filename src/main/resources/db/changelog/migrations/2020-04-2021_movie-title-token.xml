@@ -184,5 +184,14 @@
             <column name="movie_id" value="3"/>
             <column name="token" value="jedi"/>
         </insert>
+        <insert tableName="comment">
+            <column name="commentor_id" value="1"/>
+            <column name="movie_id" value="1"/>
+            <column name="comment" value="This is a comment"/>
+            <column name="active" value="true"/>
+            <column name="created_at" value="now()"/>
+            <column name="updated_at" value="now()"/>
+            <column name="version" value="0"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>

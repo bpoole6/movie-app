@@ -16,10 +16,10 @@ export default function NavbarContainer() {
     return (<Navbar bg="light" expand="lg">
         <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-                {/*<Nav.Link onClick={() =>  history.push("/")}>Intro</Nav.Link>*/}
-                {/*<Nav.Link onClick={() =>  history.push("/")}>Campaigns</Nav.Link>*/}
-                {/*<Nav.Link onClick={() =>  history.push("/")}>Manual Campaign</Nav.Link>*/}
-                {/*<Nav.Link onClick={() =>  history.push("/")}>Dow Tick</Nav.Link>*/}
+                <Nav.Link onClick={() => {
+                    localStorage.removeItem("jwt_token")
+                    window.location.reload();
+                }}>Logout</Nav.Link>
             </Nav>
         </Navbar.Collapse>
     </Navbar>)

@@ -18,7 +18,9 @@ APP_AXIOS.interceptors.response.use((response) => {
     if(response.status === 401) {
         localStorage.removeItem("jwt_token")
         window.location.href  = "/"
+
     }else {
+        console.log(response)
         localStorage.setItem('jwt_token', response.headers['authorization'])
     }
     return response;
@@ -49,18 +51,20 @@ export class ManualApi{
         return APP_AXIOS.get(`${root}/movie/${movieId}`);
     }
     static comments(movieId){
-        console.log(movieId)
         return APP_AXIOS.get(`${root}/comment/movie/${movieId}`)
     }
 
-    static createUpdateComment(commentId, comment){
-        return APP_AXIOS.put(`${root}/comment/`)
+    static createUpdateComment(comment){
+        return APP_AXIOS.put(`${root}/comment/`,comment)
     }
     static deleteComment(commentId){
-        return APP_AXIOS.delete(`${root}/comment/${movieId}`)
+        return APP_AXIOS.delete(`${root}/comment/${commentId}`)
     }
     static likeComment(commentId,like){
         return APP_AXIOS.put(`${root}/comment/${commentId}/rating`,{'vote':like})
+    }
+    static movieVote(movieId,rating){
+        return APP_AXIOS.put(`${root}/movie/${movieId}/rating`,{'rating':rating})
     }
 
 

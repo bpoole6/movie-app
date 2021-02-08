@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.time.ZonedDateTime;
 import java.util.*;
@@ -21,6 +22,7 @@ import java.util.*;
 @SpringBootApplication
 @EnableJpaAuditing(dateTimeProviderRef = "auditingDateTimeProvider")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableWebMvc
 public class MovieAppApplication {
 
     public static void main(String[] args) {

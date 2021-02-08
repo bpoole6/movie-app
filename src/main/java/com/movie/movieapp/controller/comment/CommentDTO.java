@@ -25,6 +25,8 @@ public class CommentDTO {
 
     private String createdAt;
 
+    private ZonedDateTime createdAtDate;
+
     private Long parentCommentId;
 
     private long likes;
@@ -42,6 +44,7 @@ public class CommentDTO {
         this.comment = other.getComment();
         this.active = other.isActive();
         this.createdAt = TimeUtils.ZONED_DATE_TIME.format(other.getCreatedAt());
+        this.createdAtDate = other.getCreatedAt();
         Optional.ofNullable(other.getParentComment()).ifPresent(c-> setParentCommentId(c.getId()));
     }
 }

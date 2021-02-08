@@ -9,6 +9,7 @@ import com.movie.movieapp.entity.Comment;
 import com.movie.movieapp.entity.CommentVote;
 import com.movie.movieapp.entity.Movie;
 import com.movie.movieapp.entity.Principal;
+import com.movie.movieapp.exceptions.ForbiddenException;
 import com.movie.movieapp.repo.CommentRepository;
 import com.movie.movieapp.repo.CommentVoteRepository;
 import com.movie.movieapp.repo.MovieRepository;
@@ -18,7 +19,6 @@ import org.apache.catalina.User;
 import org.apache.commons.collections4.map.LazyMap;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.NotFoundException;
 import java.util.*;
 import java.util.function.Function;
@@ -42,7 +42,7 @@ public class CommentService {
         if(Objects.nonNull(request.getCommentId())){
             comment = commentRepository.findById(request.getCommentId()).orElseThrow(()-> new NotFoundException("Comment not found"));
             TNPrincipal principal = UserHelper.currentPrincipal();
-            if(principal.getId().equals(comment.getCommentor().getId()) || UserHelper.currentPrincipal().hasRole(Roles.ADMIN)){
+            if(!principal.getId().equals(comment.getCommentor().getId()) && !UserHelper.currentPrincipal().hasRole(Roles.ADMIN)){
                 throw new ForbiddenException("Principal Not allowed to modify comment");
             }
 
@@ -63,13 +63,18 @@ public class CommentService {
     }
 
     public void deactivate(Long id) {
+        Principal principal =UserHelper.currentPrincipal().getPrincipal();
+
         commentRepository.findById(id).ifPresent(comment -> {
+            if(!principal.getId().equals(comment.getCommentor().getId()) && !UserHelper.currentPrincipal().hasRole(Roles.ADMIN)) {
+                throw new ForbiddenException("Not Authorized");
+            }
             comment.setActive(false);
             this.commentRepository.save(comment);
         });
     }
 
-    public Map<Long,ParentCommentDTO> findByMovie(Long movieId) {
+    public Collection<ParentCommentDTO> findByMovie(Long movieId) {
         Principal principal =UserHelper.currentPrincipal().getPrincipal();
 
         List<CommentDTO> comments = commentRepository.findActiveMovieAndComments(movieId).stream().map(CommentDTO::new).collect(Collectors.toList());
@@ -80,9 +85,12 @@ public class CommentService {
             comment.setUserLike(this.commentVoteRepository.findByComment_IdAndVoter(comment.getId(), principal).map(CommentVote::getVote).orElse(null));
         });
         Map<Long,ParentCommentDTO> parentComments = comments.stream().filter(commentDTO -> Objects.isNull(commentDTO.getParentCommentId())).map(c-> new ParentCommentDTO(c)).collect(Collectors.toMap(c->c.getParent().getId(), Function.identity()));
-        comments.stream().filter(commentDTO -> Objects.nonNull(commentDTO.getParentCommentId())).forEach(c-> parentComments.get(c.getParentCommentId()).getChildren().add(c));
+        comments.stream().filter(commentDTO -> Objects.nonNull(commentDTO.getParentCommentId())).sorted(Comparator.comparing(CommentDTO::getCreatedAtDate)).forEach(c-> {
+            if( parentComments.get(c.getParentCommentId())!=null)
+            parentComments.get(c.getParentCommentId()).getChildren().add(c);
+        });
 
-        return parentComments;
+        return parentComments.values().stream().sorted(Comparator.comparing(p->p.getParent().getCreatedAtDate())).collect(Collectors.toList());
     }
 
     public CommentDTO vote(Long commentId, VoteRequest request){
@@ -92,13 +100,14 @@ public class CommentService {
         CommentVote cv;
         if(opt.isPresent()){
             cv = opt.get();
-            if(principal.getId().equals(comment.getCommentor().getId())){
+            if(!principal.getId().equals(opt.get().getVoter().getId())){
                 throw new ForbiddenException("Principal Not allowed to modify comment");
             }
             setVote(cv,request);
 
         }else{
             cv = new CommentVote();
+            cv.setComment(comment);
             cv.setVoter(principal);
             setVote(cv,request);
         }

@@ -50,22 +50,16 @@ class MovieApp extends React.Component {
                     <NavbarContainer/>
                     <AsyncTypeahead
                         isLoading={this.state.loading}
-                        allowNew
                         id="basic-typeahead-multiple"
                         labelKey='title'
                         onSearch={(query)=>this.movieTypeAhead(query)}
                         options={this.state.options}
                         placeholder="What movie are you looking for"
                         onChange={this.onMovieSelected}
-                        // selected={this.state.selected}
                     />
                     <React.Fragment>
                         <Switch>
                             <Route exact path="/">
-                                <h1>Home</h1>
-                            </Route>
-                            <Route path="/search">
-                                fudge
                             </Route>
                             <Route path="/movie/:id">
                             <MovieDetailsContainer/>

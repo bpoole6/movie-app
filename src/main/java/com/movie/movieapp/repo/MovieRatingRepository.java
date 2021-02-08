@@ -13,6 +13,5 @@ import java.util.Optional;
 public interface MovieRatingRepository extends JpaRepository<MovieRating, Long> {
     @Query("select m.rating from MovieRating m where m.movie.id = :movieId")
     List<Rating> findRatings(@Param("movieId")Long movieId);
-
     Optional<MovieRating> findByVoterAndMovie(Principal voter, Movie movie);
 }

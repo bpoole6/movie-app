@@ -24,7 +24,7 @@ public class DataSourceConfig {
         BasicDataSource ds = new BasicDataSource();
         ds.setUsername(user);
         ds.setPassword(password);
-        ds.setUrl(url);
+        ds.setUrl("jdbc:postgresql://localhost:5331/postgres?");
 
         ds.setMaxTotal(10);
         ds.setMinIdle(5);

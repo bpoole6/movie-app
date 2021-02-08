@@ -1,10 +1,12 @@
 package com.movie.movieapp.controller.movie;
 
 import com.movie.movieapp.entity.Movie;
+import com.movie.movieapp.entity.MovieRating;
 import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.Optional;
 
 @Data
 public class MovieDTO {
@@ -17,7 +19,8 @@ public class MovieDTO {
     private String plot;
     private String language;
     private String crew;
-
+    private double rating;
+    private Integer userRating;
     public MovieDTO(Movie movie){
         this.id = movie.getId();
         this.title = movie.getTitle();
@@ -29,7 +32,7 @@ public class MovieDTO {
         this.crew = movie.getCrew();
     }
 
-    public MovieDTO(Movie movie,String bucket){
+    public MovieDTO(Movie movie,String bucket, double percent, MovieRating movieRating){
         this.id = movie.getId();
         this.title = movie.getTitle();
         this.description = movie.getDescription();
@@ -41,6 +44,9 @@ public class MovieDTO {
         if(movie.getS3PicturePath()!=null){
             this.s3Link = String.format("https://%s.s3.amazonaws.com/%s",bucket,movie.getS3PicturePath());
         }
+        if(!Double.isNaN(percent))
+        this.rating = percent;
+        Optional.ofNullable(movieRating).ifPresent(r->this.setUserRating(r.getRating().getRating()));
     }
     public Movie toMovie(){
         Movie movie = new Movie();

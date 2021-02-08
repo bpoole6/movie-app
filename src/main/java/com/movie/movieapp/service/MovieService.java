@@ -50,8 +50,16 @@ public class MovieService {
     }
 
     public MovieDTO details(Long id){
-        return movieRepository.findActiveMovieById(id).map(m-> new MovieDTO(m,bucketName)).orElseThrow(() -> new NotFoundException("Movie not found"));
+        TNPrincipal tnPrincipal = UserHelper.currentPrincipal();
 
+
+        Movie movie = movieRepository.findActiveMovieById(id).orElseThrow(() -> new NotFoundException("Movie not found"));
+        Optional<MovieRating> userVote = this.movieRatingRepository.findByVoterAndMovie(tnPrincipal.getPrincipal(), movie);
+        List<Rating> ratings = this.movieRatingRepository.findRatings(id);
+        long sum =ratings.stream().map(Rating::getRating).reduce(0,(f,s)->f+s);
+        double percent =sum/(double) ratings.size();
+        MovieDTO dto = new MovieDTO(movie,bucketName,percent,userVote.orElseGet(()->null));
+        return dto;
     }
 
     public void save(CreateUpdateMovieRequest request){
@@ -130,6 +138,7 @@ public class MovieService {
             }
         }else{
             mr = new MovieRating();
+            mr.setMovie(movie);
             mr.setVoter(tnPrincipal.getPrincipal());
         }
 

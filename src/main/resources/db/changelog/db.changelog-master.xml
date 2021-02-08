@@ -116,7 +116,7 @@
             <column name="voter_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="vote" type="INTEGER">
+            <column name="vote" type="BOOLEAN">
                 <constraints nullable="true"/>
             </column>
             <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">

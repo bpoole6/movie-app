@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -19,13 +20,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthenticationProvider authenticationProvider;
     private final EncryptedKeysService encryptedKeysService;
     private  final BlackListed blackListed;
-
+    private  final CorsFilter corsFilter;
     @Autowired
-    public SpringSecurityConfig(AuthenticationProvider authenticationProvider, EncryptedKeysService encryptedKeysService, BlackListed blackListed) {
+    public SpringSecurityConfig(AuthenticationProvider authenticationProvider, EncryptedKeysService encryptedKeysService, BlackListed blackListed, CorsFilter corsFilter) {
         super();
         this.authenticationProvider = authenticationProvider;
         this.encryptedKeysService = encryptedKeysService;
         this.blackListed = blackListed;
+        this.corsFilter = corsFilter;
     }
 
     @Override
@@ -37,10 +39,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.cors().and().csrf().disable().authorizeRequests()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), encryptedKeysService))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager(), encryptedKeysService, blackListed))
+                .addFilter(corsFilter)
+
                 // this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
