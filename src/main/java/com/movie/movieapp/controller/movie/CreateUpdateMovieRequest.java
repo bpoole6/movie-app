@@ -7,7 +7,8 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data
-public class CreateMovieRequest {
+public class CreateUpdateMovieRequest {
+    private Long id;
     @NotNull
     private String title;
 
@@ -17,11 +18,4 @@ public class CreateMovieRequest {
     @NotNull
     private LocalDate premiereDate;
 
-    public Movie toMovie(){
-        Movie movie = new Movie();
-        movie.setTitle(getTitle());
-        movie.setDescription(getDescription());
-        movie.setPremiereDate(getPremiereDate());
-        return movie;
-    }
 }

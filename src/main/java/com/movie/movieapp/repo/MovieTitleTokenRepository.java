@@ -1,13 +1,19 @@
 package com.movie.movieapp.repo;
 
 import com.movie.movieapp.entity.Movie;
-import com.movie.movieapp.entity.MovieTitleBreakDown;
+import com.movie.movieapp.entity.MovieTitleToken;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface MovieTitleBreakDownRepository extends JpaRepository<MovieTitleBreakDown,Long> {
+import java.util.List;
 
-    @Query("select m from MovieTitleBreakDown  where movie.id = :id and token = ")
+@Repository
+public interface MovieTitleTokenRepository extends JpaRepository<MovieTitleToken,Long> {
+
+    List<MovieTitleToken> findMovieTitleTokenByMovie_Id(long movieId);
+
+
 }

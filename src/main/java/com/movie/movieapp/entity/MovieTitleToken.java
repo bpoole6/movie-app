@@ -15,11 +15,13 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "movie_title_break_down")
-public class MovieTitleBreakDown {
+@Table(name = "movie_title_token")
+public class MovieTitleToken {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "movie_id")
     private Movie movie;
 

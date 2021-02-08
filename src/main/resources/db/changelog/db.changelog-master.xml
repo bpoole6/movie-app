@@ -1,0 +1,213 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.10.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+    <changeSet author="apoole" id="1612327286882-1">
+        <createTable tableName="roles">
+            <column name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="roles_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-2">
+        <createTable tableName="comment">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="comment_pkey"/>
+            </column>
+            <column name="comment" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="commentor_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="movie_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="commented_id" type="BIGINT"/>
+            <column name="active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-3">
+        <createTable tableName="movie_rating">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="movie_rating_pkey"/>
+            </column>
+            <column name="voter_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="movie_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-4">
+        <createTable tableName="principal_roles">
+            <column name="role_id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_roles_pkey"/>
+            </column>
+            <column name="principal_id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_roles_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-5">
+        <createTable tableName="principal">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="Principal_pkey"/>
+            </column>
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-6">
+        <createTable tableName="comment_vote">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="comment_vote_pkey"/>
+            </column>
+            <column name="comment_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voter_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vote" type="INTEGER">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-7">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="comment_vote_id_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-8">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="movie_rating_id_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-9">
+        <createTable tableName="movie">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="movie_pkey"/>
+            </column>
+            <column name="title" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="plot" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="language" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="crew" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="premiere_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="s3_picture_path" type="text">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-10">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="principal_roles" constraintName="user_roles_role_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="roles" validate="true"/>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-11">
+        <addForeignKeyConstraint baseColumnNames="comment_id" baseTableName="comment_vote" constraintName="comment_vote_comment_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="comment" validate="true"/>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-12">
+        <addUniqueConstraint columnNames="username" constraintName="Principal_username_key" tableName="principal"/>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-13">
+        <addForeignKeyConstraint baseColumnNames="commentor_id" baseTableName="comment" constraintName="comment_commentor_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="principal" validate="true"/>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-14">
+        <addForeignKeyConstraint baseColumnNames="movie_id" baseTableName="comment" constraintName="comment_movie_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="principal" validate="true"/>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-15">
+        <addForeignKeyConstraint baseColumnNames="voter_id" baseTableName="comment_vote" constraintName="comment_vote_voter_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="principal" validate="true"/>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-16">
+        <addForeignKeyConstraint baseColumnNames="voter_id" baseTableName="movie_rating" constraintName="movie_rating_voter_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="principal" validate="true"/>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-17">
+        <addForeignKeyConstraint baseColumnNames="principal_id" baseTableName="principal_roles" constraintName="user_roles_principal_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="principal" validate="true"/>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-18">
+        <addUniqueConstraint columnNames="comment_id, voter_id" constraintName="comment_vote_comment_id_voter_id_key" tableName="comment_vote"/>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-19">
+        <addForeignKeyConstraint baseColumnNames="movie_id" baseTableName="movie_rating" constraintName="movie_rating_movie_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="movie" validate="true"/>
+    </changeSet>
+    <changeSet author="apoole" id="1612327286882-20">
+        <addForeignKeyConstraint baseColumnNames="commented_id" baseTableName="comment" constraintName="comment_commented_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="comment" validate="true"/>
+    </changeSet>
+    <includeAll path="db/changelog/migrations"/>
+</databaseChangeLog>

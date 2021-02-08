@@ -1,9 +1,15 @@
-package com.movie.movieapp;
+package com.movie.movieapp.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.movie.movieapp.entity.Principal;
+import com.movie.movieapp.exceptions.ForbiddenException;
+import com.movie.movieapp.security.jwt.JWTUtils;
+import com.movie.movieapp.security.token_blacklist.BlackListed;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -14,12 +20,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.movie.movieapp.SecurityConstants.*;
+import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
+import static com.movie.movieapp.security.SecurityConstants.*;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
-
-    public JWTAuthorizationFilter(AuthenticationManager authManager) {
+    private final EncryptedKeysService encryptedKeysService;
+    private final BlackListed blackListed;
+    public JWTAuthorizationFilter(AuthenticationManager authManager, EncryptedKeysService encryptedKeysService, BlackListed blackListed) {
         super(authManager);
+        this.encryptedKeysService = encryptedKeysService;
+        this.blackListed = blackListed;
     }
 
     @Override
@@ -33,26 +43,25 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             return;
         }
 
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+        String token = req.getHeader(HEADER_STRING);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        chain.doFilter(req, res);
-    }
-
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader(HEADER_STRING);
         if (token != null) {
-            // parse the token.
-            String user = JWT.require(Algorithm.HMAC512(SECRET.getBytes()))
-                    .build()
-                    .verify(token.replace(TOKEN_PREFIX, ""))
-                    .getSubject();
-
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+            if(blackListed.isBlock(token)){
+                throw new ForbiddenException("Not Authorized");
             }
-            return null;
+            // parse the token.
+            DecodedJWT jwt = JWT.require(Algorithm.HMAC512(encryptedKeysService.getSecret().getBytes()))
+                    .build()
+                    .verify(token.replace(TOKEN_PREFIX, ""));
+
+            UsernamePasswordAuthenticationToken auth = JWTUtils.getUserDetails(jwt);
+            String newToken = JWTUtils.copyFromDecoded(jwt).sign(HMAC512(encryptedKeysService.getSecret().getBytes()));
+            if (auth != null) {
+                SecurityContextHolder.getContext().setAuthentication(auth);
+                res.addHeader(HEADER_STRING, TOKEN_PREFIX + newToken);
+                chain.doFilter(req, res);
+            }
         }
-        return null;
     }
+
 }

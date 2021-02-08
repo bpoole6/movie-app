@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="2021-01-29-14-59_insurance-carrier-itel-asp-available" author="apoole">
+        <createTable tableName="movie_title_token">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="movie_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="token" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="movie_id" baseTableName="movie_title_token" constraintName="movie_title_token_movie_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="movie" validate="true"/>
+        <addUniqueConstraint columnNames="movie_id, token" constraintName="movie_title_token_movie_id_token_key" tableName="movie_title_token"/>
+        <insert tableName="principal">
+            <column name="username" value="admin"/>
+            <column name="password" value="$2a$10$Tx6in5eUmACkSCaSS9QQ6ehuvyNQGE/twLSY09wqz9xCA9wIrMuLm"/>
+            <column name="first_name" value="TestAdmin"/>
+            <column name="last_name" value="Person"/>
+            <column name="email" value="bpoole1835@gmail.com"/>
+            <column name="created_at" value="now()"/>
+            <column name="updated_at" value="now()"/>
+            <column name="version" value="0"/>
+        </insert>
+        <insert tableName="principal">
+            <column name="username" value="user1"/>
+            <column name="password" value="$2a$10$Tx6in5eUmACkSCaSS9QQ6ehuvyNQGE/twLSY09wqz9xCA9wIrMuLm"/>
+            <column name="first_name" value="TestUser1"/>
+            <column name="last_name" value="Person"/>
+            <column name="email" value="read@gmail.com"/>
+            <column name="created_at" value="now()"/>
+            <column name="updated_at" value="now()"/>
+            <column name="version" value="0"/>
+        </insert>
+        <insert tableName="principal">
+            <column name="username" value="user2"/>
+            <column name="password" value="$2a$10$Tx6in5eUmACkSCaSS9QQ6ehuvyNQGE/twLSY09wqz9xCA9wIrMuLm"/>
+            <column name="first_name" value="TestUser2"/>
+            <column name="last_name" value="Person"/>
+            <column name="email" value="read2@gmail.com"/>
+            <column name="created_at" value="now()"/>
+            <column name="updated_at" value="now()"/>
+            <column name="version" value="0"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="id" value="1"/>
+            <column name="name" value="ADMIN"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="id" value="2"/>
+            <column name="name" value="USER"/>
+        </insert>
+        <insert tableName="principal_roles">
+            <column name="role_id" value="1"/>
+            <column name="principal_id" value="1"/>
+        </insert>
+        <insert tableName="principal_roles">
+            <column name="role_id" value="2"/>
+            <column name="principal_id" value="2"/>
+        </insert>
+        <insert tableName="principal_roles">
+            <column name="role_id" value="2"/>
+            <column name="principal_id" value="3"/>
+        </insert>
+
+        <insert tableName="movie">
+            <column name="title" value="STAR WARS: THE RISE OF SKYWALKER"/>
+            <column name="description" value="A powerful enemy returns and Rey must face her destiny."/>
+            <column name="premiere_date" value="2019-05-05"/>
+            <column name="plot" value="People fight with Light sabers"/>
+            <column name="language" value="English"/>
+            <column name="crew" value="Mark Hamil,Stage person 1, Stage person 2,others?"/>
+            <column name="s3_picture_path" value="movie/images/1/star-wars-the-rise-of-skywalker.jpeg"/>
+            <column name="created_at" value="now()"/>
+            <column name="updated_at" value="now()"/>
+            <column name="version" value="0"/>
+            <column name="active" value="true"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="1"/>
+            <column name="token" value="star"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="1"/>
+            <column name="token" value="wars"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="1"/>
+            <column name="token" value=":"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="1"/>
+            <column name="token" value="the"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="1"/>
+            <column name="token" value="rise"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="1"/>
+            <column name="token" value="of"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="1"/>
+            <column name="token" value="skywalker"/>
+        </insert>
+        <insert tableName="movie">
+            <column name="title" value="SOLO: A STAR WARS STORY"/>
+            <column name="description" value="Board the Millennium Falcon and journey to a galaxy far, far away in Solo: A Star Wars Story, an all-new adventure with the most beloved scoundrel in the galaxy. Through a series of daring escapades deep within a dark and dangerous criminal underworld, Han Solo meets his mighty future copilot Chewbacca and encounters the notorious gambler Lando Calrissian, in a journey that will set the course of one of the Star Wars saga’s most unlikely heroes."/>
+            <column name="premiere_date" value="2018-05-05"/>
+            <column name="plot" value="People fight with Light sabers"/>
+            <column name="language" value="English"/>
+            <column name="crew" value="Mark Hamil,Stage person 1, Stage person 2,others?"/>
+            <column name="s3_picture_path" value="movie/images/2/solo.jpeg"/>
+            <column name="created_at" value="now()"/>
+            <column name="updated_at" value="now()"/>
+            <column name="version" value="0"/>
+            <column name="active" value="true"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="2"/>
+            <column name="token" value="solo"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="2"/>
+            <column name="token" value=":"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="2"/>
+            <column name="token" value="a"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="2"/>
+            <column name="token" value="star"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="2"/>
+            <column name="token" value="wars"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="2"/>
+            <column name="token" value="story"/>
+        </insert>
+        <insert tableName="movie">
+            <column name="title" value="STAR WARS: THE LAST JEDI"/>
+            <column name="description" value="Rey has found the legendary Luke Skywalker, hoping to be trained in the ways of the Force. Meanwhile, the First Order seeks to destroy the remnants of the Resistance and rule the galaxy unopposed."/>
+            <column name="premiere_date" value="2017-05-05"/>
+            <column name="plot" value="People fight with Light sabers"/>
+            <column name="language" value="English"/>
+            <column name="crew" value="Mark Hamil,Stage person 1, Stage person 2,others?"/>
+            <column name="s3_picture_path" value="movie/images/3/the-last-jedi.jpeg"/>
+            <column name="created_at" value="now()"/>
+            <column name="updated_at" value="now()"/>
+            <column name="version" value="0"/>
+            <column name="active" value="true"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="3"/>
+            <column name="token" value="star"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="3"/>
+            <column name="token" value="wars"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="3"/>
+            <column name="token" value=":"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="3"/>
+            <column name="token" value="the"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="3"/>
+            <column name="token" value="last"/>
+        </insert>
+        <insert tableName="movie_title_token">
+            <column name="movie_id" value="3"/>
+            <column name="token" value="jedi"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
