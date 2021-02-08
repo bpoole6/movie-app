@@ -4,7 +4,8 @@ const  root = 'api'
 
 if(process.env.REACT_APP_ENV ==='dev'){
      baseurl ="http://localhost:8080/"
-     // baseurl ="https://34.192.88.178/"
+}else {
+    baseurl = "http://100.26.179.40:8080/"
 }
 
 let APP_AXIOS = axios.create({

@@ -38,13 +38,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.cors().and().csrf().disable().authorizeRequests()
+        http.addFilter(corsFilter).cors().and().csrf().disable().authorizeRequests()
                 .anyRequest().permitAll()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), encryptedKeysService))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager(), encryptedKeysService, blackListed))
-                .addFilter(corsFilter)
-
                 // this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }

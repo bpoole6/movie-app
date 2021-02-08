@@ -19,6 +19,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import java.time.ZonedDateTime;
 import java.util.*;
 
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 @EnableJpaAuditing(dateTimeProviderRef = "auditingDateTimeProvider")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -55,5 +57,7 @@ public class MovieAppApplication {
     public DateTimeProvider auditingDateTimeProvider() {
         return () -> Optional.of(ZonedDateTime.now());
     }
+
+
 
 }

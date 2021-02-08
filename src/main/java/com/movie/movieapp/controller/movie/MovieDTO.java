@@ -2,9 +2,9 @@ package com.movie.movieapp.controller.movie;
 
 import com.movie.movieapp.entity.Movie;
 import com.movie.movieapp.entity.MovieRating;
+import com.movie.movieapp.util.TimeUtils;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
@@ -13,7 +13,7 @@ public class MovieDTO {
     private Long id;
     private String title;
     private String description;
-    private LocalDate premiereDate;
+    private String premiereDate;
     private ZonedDateTime createdAt;
     private String s3Link;
     private String plot;
@@ -25,7 +25,7 @@ public class MovieDTO {
         this.id = movie.getId();
         this.title = movie.getTitle();
         this.description = movie.getDescription();
-        this.premiereDate = movie.getPremiereDate();
+        this.premiereDate = TimeUtils.ZONED_DATE.format(movie.getPremiereDate());
         this.createdAt = movie.getCreatedAt();
         this.plot = movie.getPlot();
         this.language = movie.getLanguage();
@@ -36,7 +36,7 @@ public class MovieDTO {
         this.id = movie.getId();
         this.title = movie.getTitle();
         this.description = movie.getDescription();
-        this.premiereDate = movie.getPremiereDate();
+        this.premiereDate = TimeUtils.ZONED_DATE.format(movie.getPremiereDate());
         this.createdAt = movie.getCreatedAt();
         this.plot = movie.getPlot();
         this.language = movie.getLanguage();
@@ -47,12 +47,5 @@ public class MovieDTO {
         if(!Double.isNaN(percent))
         this.rating = percent;
         Optional.ofNullable(movieRating).ifPresent(r->this.setUserRating(r.getRating().getRating()));
-    }
-    public Movie toMovie(){
-        Movie movie = new Movie();
-        movie.setTitle(getTitle());
-        movie.setDescription(getDescription());
-        movie.setPremiereDate(getPremiereDate());
-        return movie;
     }
 }
